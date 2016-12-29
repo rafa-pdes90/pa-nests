@@ -10,6 +10,6 @@ For now it requires some manual configuration of the files inside data folder:
 - pokemon_list.json - Here goes a list of all pokemons until Generation VI, sorted by theirs IDs. No need to mess with it, unless Pokemon GO gets Generation VII.
 
 After configuring those files, install the requirements.txt as follow:
-pip install -r requirements.txt
+> pip install -r requirements.txt
 
 Finally, run the script: nestParser.py
