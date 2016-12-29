@@ -15,7 +15,7 @@ def dump_poke_groups(poke_groups, pokeGroups):
         groupId = '@'+str(groupNum)
         groupNode = poke_groups[groupId]
         data.append(groupNode[1])
-    with open('locs.json', 'w') as locs:
+    with open('data/locs.json', 'w') as locs:
         json.dump(data, locs, indent=2)
 
 def add_nest(poke_groups, pokeGroups):
@@ -184,16 +184,16 @@ def load_data():
     i = 0
     while (i < 4):
         try:
-            with open('locs.json') as locs:
+            with open('data/locs.json') as locs:
                 nest_locs = json.load(locs)
             i += 1
-            with open('pokealert_spawn_points.json') as spawns:
+            with open('data/pokealert_spawn_points.json') as spawns:
                 poke_spawns = json.load(spawns)
             i += 1
-            with open('common_pokemon.json') as commons:
+            with open('data/common_pokemon.json') as commons:
                 global_common = json.load(commons)
             i += 1
-            with open('pokemon_list.json') as pokemons:
+            with open('data/pokemon_list.json') as pokemons:
                 poke_list = json.load(pokemons)
             i += 1
         except FileNotFoundError as err:
@@ -202,13 +202,13 @@ def load_data():
         except:
             data = []
             if (i == 0):
-                with open('locs.json', 'w') as locs:
+                with open('data/locs.json', 'w') as locs:
                     json.dump(data, locs)
             elif (i == 1):
-                with open('pokealert_spawn_points.json', 'w') as spawns:
+                with open('data/pokealert_spawn_points.json', 'w') as spawns:
                     json.dump(data, spawns)
             elif (i == 2):
-                with open('common_pokemon.json', 'w') as commons:
+                with open('data/common_pokemon.json', 'w') as commons:
                     json.dump(data, commons)
             else:
                 print('Incorrect data on \'pokemon_list.json\' file. Replace it.')
