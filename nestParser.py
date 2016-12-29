@@ -19,7 +19,7 @@ def dump_poke_groups(poke_groups, pokeGroups):
         json.dump(data, locs, indent=2)
 
 def add_nest(poke_groups, pokeGroups):
-    print('- New Nest -')
+    print('\n- New Nest -')
     coords = input('Lat,Lng: ')
     name = input('Name: ')
     rad = int(input('Radius: '))
@@ -35,7 +35,7 @@ def add_nest(poke_groups, pokeGroups):
     groupId = '@'+str(pokeGroups)
     poke_groups[groupId] = node
     pokeGroups += 1
-    update_nest(poke_groups, pokeGroups, groupId, lat, lng, name, rad)
+    update_nest(poke_groups, pokeGroups, groupId, lat, lng, name, rad, common)
     return poke_groups, pokeGroups
 
 def update_nest(poke_groups, pokeGroups, groupId, lat=None, lng=None, name=None, rad=None, common=None):
@@ -77,7 +77,7 @@ def add_spawn(spawnInfo, poke_groups, pokeGroups):
         if spawnInfo['joined'] == 0:
             closerInfo = poke_groups[closerId][1]
             pos = str(spawnInfo['lat']) + ',' + str(spawnInfo['lng'])
-            print ('Spawn at [' + pos + '] outside of any nest range.')
+            print ('\nSpawn at [' + pos + '] outside of any nest range.')
             url = 'https://www.google.com/maps/?q=' + pos
             webbrowser.open(url)
             print('Closer nest identified: ' + closerInfo['name'] + ' (Radius: ' + str(closerInfo['rad']) + 'm)')
