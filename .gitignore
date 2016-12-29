@@ -92,3 +92,4 @@ ENV/
 
 # Data
 data/locs.json
+data/pokealert_spawn_points.json
