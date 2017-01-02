@@ -20,17 +20,30 @@ def dump_poke_groups(poke_groups, pokeGroups):
 
 def add_nest(poke_groups, pokeGroups):
     print('\n- New Nest -')
-    coords = input('Lat,Lng: ')
     name = input('Name: ')
-    rad = int(input('Radius: '))
-    common = input('Common list: ').split(',')
-    for i in range(len(common)):
-        common[i] = common[i].strip()
-    if ('http' in coords):
-        coords = coords.split('@')[1]
-    coords = coords.split(',')
-    lat = float(coords[0])
-    lng = float(coords[1])
+    coords = None
+    while (coords == None):
+        coords = input('Lat,Lng: ')
+        if ('http' in coords):
+            coords = coords.split('@')[1]
+        coords = coords.split(',')
+        try:
+            lat, lng = float(coords[0]), float(coords[1])
+        except:
+            coords = None
+    rad = None
+    while (rad == None):
+        try:
+            rad = int(input('Radius: '))
+        except:
+            pass
+    aux = input('Common list: ')
+    if (aux != ''):
+        common = aux.split(',')
+        for i in range(len(common)):
+            common[i] = common[i].strip()
+    else:
+        common = []
     node = [[],{}]
     groupId = '@'+str(pokeGroups)
     poke_groups[groupId] = node
@@ -115,6 +128,8 @@ def eval_nests(poke_groups, pokeGroups):
         dup_check = {}
         groupId = '@'+str(groupNum)
         groupNode = poke_groups[groupId]
+        if (groupNode[1]['rad'] == 0):
+            continue
         all_dup = True
         for spawnNode in groupNode[0]:
             spawnInfo = spawnNode[0]
@@ -184,43 +199,53 @@ def load_data():
     i = 0
     while (i < 4):
         try:
-            with open('data/locs.json') as locs:
+            file = 'data/locs.json'
+            with open(file, 'r') as locs:
                 nest_locs = json.load(locs)
             i += 1
-            with open('data/pokealert_spawn_points.json') as spawns:
+            file = 'data/pokealert_spawn_points.json'
+            with open(file, 'r') as spawns:
                 poke_spawns = json.load(spawns)
             i += 1
-            with open('data/common_pokemon.json') as commons:
+            file = 'data/common_pokemon.json'
+            with open(file, 'r') as commons:
                 global_common = json.load(commons)
             i += 1
-            with open('data/pokemon_list.json') as pokemons:
+            file = 'data/pokemon_list.json'
+            with open(file, 'r') as pokemons:
                 poke_list = json.load(pokemons)
             i += 1
-        except FileNotFoundError as err:
-            print("{0}".format(err))
-            raise
-        except:
-            data = []
-            if (i == 0):
-                with open('data/locs.json', 'w') as locs:
-                    json.dump(data, locs)
-            elif (i == 1):
-                with open('data/pokealert_spawn_points.json', 'w') as spawns:
-                    json.dump(data, spawns)
-            elif (i == 2):
-                with open('data/common_pokemon.json', 'w') as commons:
-                    json.dump(data, commons)
-            else:
-                print('Incorrect data on \'pokemon_list.json\' file. Replace it.')
+        except FileNotFoundError:
+            print('\nFile', '\"' + file + '\"', 'not found.')
+            exampleFile = file.rstrip('json')[:-1] + '-example' + '.json'
+            try:
+                with open(exampleFile, 'r') as example:
+                    data = json.load(example)
+                print('Creating it with the contents of', '\"' + exampleFile + '\"' + '.')
+                with open(file, 'w+') as out:
+                    json.dump(data, out, indent=2)
+            except:
                 raise
             i = 0
+        except:
+            if (i == 0):
+                print('Incorrect data on \'locs.json\' file.',)
+            elif (i == 1):
+                print('Incorrect data on \'pokealert_spawn_points.json\' file.',)
+            elif (i == 2):
+                print('Incorrect data on \'common_pokemon.json\' file.',)
+            else:
+                print('Incorrect data on \'pokemon_list.json\' file.')
+            raise
     return nest_locs, poke_spawns, poke_list, global_common
     
 if __name__ == '__main__':
+    os.system('cls' if os.name == 'nt' else 'clear')
     try:
         nest_locs, poke_spawns, poke_list, global_common = load_data()
     except:
-        sys.exit()    
+        print('bug')
+        sys.exit()
     if (len(nest_locs) == 0):
         print('No nest location found on \'locs.json\'')
         sys.exit()
@@ -229,9 +254,8 @@ if __name__ == '__main__':
         sys.exit()
     
     poke_groups, pokeGroups = parse_groups(nest_locs, poke_spawns)
-    nest_gen = eval_nests(poke_groups, pokeGroups)
-    for i in range(pokeGroups):
-        groupNode, nestInfo = next(nest_gen)
+    input('\nNests parsed! Press any key to start . . . ')
+    for groupNode, nestInfo in eval_nests(poke_groups, pokeGroups):
         print_nest(groupNode, nestInfo, poke_list, global_common)
-    print()
-    input('\nPress any key to continue . . . ')
+    os.system('cls' if os.name == 'nt' else 'clear')
+    input('Press any key to continue . . . ')

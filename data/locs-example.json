@@ -1,12 +1,22 @@
 [
   {
     "name": "Awesome Ocean Park",
+    "lat": 0.0,
     "lng": 0.0,
+    "rad": 0,
     "common": [
-      "Pokemon1",
-      "Pokemon2"
-    ],
-    "rad": 120,
-    "lat": 0.0
+      "Magikarp",
+      "Goldeen"
+    ]
+  },
+  {
+    "name": "Summer House",
+    "lat": 99,
+    "lng": 99,
+    "rad": 0,
+    "common": [
+      "Seel",
+      "Lapras"
+    ]
   }
 ]
