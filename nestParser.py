@@ -23,8 +23,8 @@ def add_nest(poke_groups, pokeGroups):
     name = input('Name: ')
     coords = None
     while (coords == None):
-        coords = input('Lat,Lng: ')
-        if ('http' in coords):
+        coords = input('Lat,Lng (or Google Maps link): ')
+        if ('@' in coords):
             coords = coords.split('@')[1]
         coords = coords.split(',')
         try:
@@ -37,7 +37,7 @@ def add_nest(poke_groups, pokeGroups):
             rad = int(input('Radius: '))
         except:
             pass
-    aux = input('Common list: ')
+    aux = input('Common list (Pokemon1, Pokemon2, ...): ')
     if (aux != ''):
         common = aux.split(',')
         for i in range(len(common)):
